@@ -1,5 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:02-10-2025
+## Date:07-10-2025
 
 ## AIM:
  To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
@@ -36,126 +36,97 @@ Publish the website in the given URL.
 ```
 
 math.html
-
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Power Calculation</title>
-    <style>
-        body {
-            background-color: red;
-            font-family: Arial, sans-serif;
-        }
-
-        .edge {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .box {
-            background-color: blue;
-            border: 3px dotted yellowgreen;
-            padding: 30px;
-            border-radius: 8px;
-            width: 350px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 24px;
-            color: rgb(255, 0, 179);
-            margin-bottom: 25px;
-        }
-
-        .formelt {
-            margin: 15px 0;
-            font-size: 18px;
-            color: white;
-        }
-
-        input[type="text"] {
-            padding: 5px;
-            margin-left: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 100px;
-            text-align: center;
-        }
-
-        input[type="text"]:read-only {
-            background-color: lightyellow;
-            font-weight: bold;
-        }
-
-        input[type="submit"] {
-            padding: 6px 15px;
-            background-color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: lightgray;
-        }
-    </style>
+<title>Body Mass Index</title>
+<style>
+body
+{
+background-color:rgb(0, 252, 206);
+}
+.edge {
+width: 1650px;
+margin-left: auto;
+margin-right: auto;
+padding-top: 400px;
+padding-left: 350px;
+}
+.box {
+display:block;
+border: solid 7px peru;
+width: 700px;
+min-height: 400px;
+font-size: 40px;
+background-color: rgb(130, 191, 238);
+}
+.formelt{
+color: blue;
+text-align: center;
+margin-top: 7px;
+margin-bottom: 7px;
+}
+</style>
 </head>
 <body>
-    <div class="edge">
-        <div class="box">
-            <h1>Power Calculation (I²R)</h1>
-            <form method="POST">
-                {% csrf_token %}
-                <div class="formelt">
-                    Intensity (I): <input type="text" name="intensity" value="{{I}}"> (A)<br>
-                </div>
-                <div class="formelt">
-                    Resistance (R): <input type="text" name="resistance" value="{{R}}"> (Ω)<br>
-                </div>
-                <div class="formelt">
-                    <input type="submit" value="Calculate"><br>
-                </div>
-                <div class="formelt">
-                    Power : <input type="text" name="power" value="{{P}}" readonly> W<br>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class= "edge">
+<div class= "box">
+<h1>Body Mass Index</h1>
+<h2>k.vishwathini(25016664)</h2>
+<form method="POST">
+{% csrf_token %}
+<div class= "formelt">
+Weight: <input type= "text" name="Weight" value="{{Weight}}"></input>(in kg)<br/>
+</div>
+<div class= "formelt">
+Height: <input type="text" name="Height" value="{{Height}}"></input>(in m)<br/>
+</div>
+<div class= "formelt">
+<input type="submit" value="Calculate"><br/>
+</div>
+<div class= "formelt">
+bmi: <input type="text" name="bmi" value="{{bmi}}" align:"center"></input>kg/m<sup>3</sup><br/>
+</div>
+</form>
+</div>
+</div>
 </body>
 </html>
 
-view.py
-from django.shortcuts import render
 
-def power_calc(request):
-    context = {"I": "0", "R": "0", "P": "0"}
-    
+
+views.py
+from django.shortcuts import render
+def calculateBMI(request):
+    bmi=None
+    Weight=None
+    Height=None
     if request.method == 'POST':
-        try:
-            I = float(request.POST.get('intensity', '0'))
-            R = float(request.POST.get('resistance', '0'))
-            
-            P = I**2 * R  
-            
-            context["I"] = I
-            context["R"] = R
-            context["P"] = round(P, 2)  
-        except:
-            context["P"] = "Error"
-    
-    return render(request, 'mathapp/math.html', context)
+        print("POST method is used")
+        Weight=float(request.POST.get("Weight"))
+        Height=float(request.POST.get("Height"))/100
+        bmi = Weight/(Height**2)
+        bmi =round(bmi,2)
+        print(f"1Weight in kg: {Weight} ,Height in m: {Height},bmi: {bmi}")
+    return render(request,'mathapp/math.html',{'bmi':bmi})
+
+
+urls.py
+from django.contrib import admin
+from django.urls import path
+from mathapp import views
+urlpatterns=[
+    path('admin/', admin.site.urls),
+    path('',views.calculateBMI,name="home"),
+    path('bmi/', views.calculateBMI,name='bmi')
+]
+
 
 ```
 
 ## SERVER SIDE PROCESSING:
-![alt text](<Screenshot (51).png>)
+![alt text](<Screenshot (61).png>)
 
 ## HOMEPAGE:
-![alt text](<Screenshot (52).png>)
+![alt text](<Screenshot (62).png>)
 
 ## RESULT:
 The program for performing server side processing is completed successfully.
