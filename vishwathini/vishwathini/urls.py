@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from mathapp import views
-
-urlpatterns = [
+urlpatterns=[
     path('admin/', admin.site.urls),
-    path('power/', views.power_calc, name='power_calc'),
-    path('', views.power_calc, name="home")
+    path('',views.calculateBMI,name="home"),
+    path('bmi/', views.calculateBMI,name='bmi')
 ]
